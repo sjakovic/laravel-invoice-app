@@ -75,6 +75,11 @@
             font-size: 10px;
             color: #666;
         }
+        .logo {
+            max-width: 150px;
+            max-height: 100px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -89,6 +94,9 @@
         <table style="width: 100%; margin-bottom: 32px;">
             <tr>
                 <td style="width: 48%; vertical-align: top;">
+                    @if($invoice->company->logo)
+                        <img src="{{ storage_path('app/public/' . $invoice->company->logo) }}" class="logo" alt="Company Logo">
+                    @endif
                     <h2 style="font-size: 16px; font-weight: bold; margin-bottom: 8px;">From:</h2>
                     <p style="font-weight: bold;">{{ $invoice->company->name }}</p>
                     <p>{{ $invoice->company->address }}</p>
@@ -99,6 +107,9 @@
                 </td>
                 <td style="width: 4%;"></td>
                 <td style="width: 48%; vertical-align: top; text-align: right;">
+                    @if($invoice->client->image)
+                        <img src="{{ storage_path('app/public/' . $invoice->client->image) }}" class="logo" alt="Client Logo">
+                    @endif
                     <h2 style="font-size: 16px; font-weight: bold; margin-bottom: 8px;">To:</h2>
                     <p style="font-weight: bold;">{{ $invoice->client->name }}</p>
                     <p>{{ $invoice->client->address }}</p>
