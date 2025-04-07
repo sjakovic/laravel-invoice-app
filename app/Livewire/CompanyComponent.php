@@ -12,11 +12,11 @@ class CompanyComponent extends Component
     use WithFileUploads;
 
     public $user_id;
+    public $company_id;
     public $name;
     public $address;
     public $city;
-    public $state;
-    public $postal_code;
+    public $zip_code;
     public $country;
     public $phone;
     public $email;
@@ -31,8 +31,7 @@ class CompanyComponent extends Component
         'name' => 'required|string|max:255',
         'address' => 'required|string|max:255',
         'city' => 'required|string|max:255',
-        'state' => 'required|string|max:255',
-        'postal_code' => 'required|string|max:20',
+        'zip_code' => 'required|string|max:20',
         'country' => 'required|string|max:255',
         'phone' => 'required|string|max:20',
         'email' => 'required|email|max:255',
@@ -55,8 +54,7 @@ class CompanyComponent extends Component
         $this->name = '';
         $this->address = '';
         $this->city = '';
-        $this->state = '';
-        $this->postal_code = '';
+        $this->zip_code = '';
         $this->country = '';
         $this->phone = '';
         $this->email = '';
@@ -75,8 +73,7 @@ class CompanyComponent extends Component
             'name' => $this->name,
             'address' => $this->address,
             'city' => $this->city,
-            'state' => $this->state,
-            'postal_code' => $this->postal_code,
+            'zip_code' => $this->zip_code,
             'country' => $this->country,
             'phone' => $this->phone,
             'email' => $this->email,
@@ -104,8 +101,7 @@ class CompanyComponent extends Component
         $this->name = $company->name;
         $this->address = $company->address;
         $this->city = $company->city;
-        $this->state = $company->state;
-        $this->postal_code = $company->postal_code;
+        $this->zip_code = $company->zip_code;
         $this->country = $company->country;
         $this->phone = $company->phone;
         $this->email = $company->email;
@@ -125,8 +121,7 @@ class CompanyComponent extends Component
             'name' => $this->name,
             'address' => $this->address,
             'city' => $this->city,
-            'state' => $this->state,
-            'postal_code' => $this->postal_code,
+            'zip_code' => $this->zip_code,
             'country' => $this->country,
             'phone' => $this->phone,
             'email' => $this->email,
