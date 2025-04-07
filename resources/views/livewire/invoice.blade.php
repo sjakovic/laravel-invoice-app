@@ -2,8 +2,8 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
             @if (session()->has('message'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-                    <span class="block sm:inline">{{ session('message') }}</span>
+                <div class="bg-green-500 border border-green-600 text-white px-4 py-3 rounded relative mb-4 shadow-lg z-50" role="alert" style="background-color: #22c55e !important;">
+                    <span class="block sm:inline font-medium">{{ session('message') }}</span>
                 </div>
             @endif
 
@@ -122,49 +122,58 @@
                         </div>
                     </form>
                 </div>
-            @endif
-
-            <div class="bg-white shadow overflow-hidden sm:rounded-md">
-                <ul class="divide-y divide-gray-200">
-                    @foreach($invoices as $invoice)
-                        <li>
-                            <div class="px-4 py-4 sm:px-6">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-blue-600 truncate">
-                                            Invoice #{{ $invoice->invoice_number }}
-                                        </p>
-                                        <p class="text-sm text-gray-500">
-                                            {{ $invoice->client->name }} - Due: {{ $invoice->due_date->format('M d, Y') }}
-                                        </p>
-                                    </div>
-                                    <div class="ml-4 flex-shrink-0 flex space-x-2">
-                                        <button wire:click="edit({{ $invoice->id }})" class="text-indigo-600 hover:text-indigo-900" title="Edit Invoice">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                            </svg>
-                                        </button>
-                                        <button wire:click="downloadPdf({{ $invoice->id }})" class="text-green-600 hover:text-green-900" title="Download PDF">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                            </svg>
-                                        </button>
-                                        <button wire:click="delete({{ $invoice->id }})" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure you want to delete this invoice?')" title="Delete Invoice">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                        </button>
+            @else
+                <div class="bg-white shadow overflow-hidden sm:rounded-md">
+                    <ul class="divide-y divide-gray-200">
+                        @foreach($invoices as $invoice)
+                            <li>
+                                <div class="px-4 py-4 sm:px-6">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-medium text-blue-600 truncate">
+                                                Invoice #{{ $invoice->invoice_number }}
+                                            </p>
+                                            <p class="text-sm text-gray-500">
+                                                {{ $invoice->client->name }} - Due: {{ $invoice->due_date->format('M d, Y') }}
+                                            </p>
+                                            <p class="text-sm font-semibold text-gray-900">
+                                                ${{ number_format($invoice->total, 2) }}
+                                            </p>
+                                        </div>
+                                        <div class="ml-4 flex-shrink-0 flex space-x-2">
+                                            <button wire:click="edit({{ $invoice->id }})" class="text-indigo-600 hover:text-indigo-900" title="Edit Invoice">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                </svg>
+                                            </button>
+                                            <a href="{{ route('invoices.preview', $invoice->id) }}" target="_blank" class="text-blue-600 hover:text-blue-900" title="Preview PDF">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                </svg>
+                                            </a>
+                                            <button wire:click="downloadPdf({{ $invoice->id }})" class="text-green-600 hover:text-green-900" title="Download PDF">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                                </svg>
+                                            </button>
+                                            <button wire:click="delete({{ $invoice->id }})" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure you want to delete this invoice?')" title="Delete Invoice">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
 
-            <div class="mt-4">
-                {{ $invoices->links() }}
-            </div>
+                <div class="mt-4">
+                    {{ $invoices->links() }}
+                </div>
+            @endif
         </div>
     </div>
 </div>

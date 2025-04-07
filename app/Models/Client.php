@@ -18,7 +18,18 @@ class Client extends Model
         'id_number',
         'tax_number',
         'type',
+        'image'
     ];
+
+    protected $appends = ['image_url'];
+
+    public function getImageUrlAttribute()
+    {
+        if (!$this->image) {
+            return null;
+        }
+        return asset('storage/' . $this->image);
+    }
 
     public function user()
     {

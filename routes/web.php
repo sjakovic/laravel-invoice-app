@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/company', CompanyComponent::class)->name('company');
     Route::get('/clients', ClientComponent::class)->name('clients');
     Route::get('/invoices', InvoiceComponent::class)->name('invoices');
+    Route::get('/invoices/{invoice}/preview', [InvoiceComponent::class, 'previewPdf'])->name('invoices.preview');
 });
 
 require __DIR__.'/auth.php';

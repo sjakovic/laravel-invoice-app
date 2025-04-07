@@ -5,10 +5,12 @@ namespace App\Livewire;
 use App\Models\Client;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class ClientComponent extends Component
 {
-    use WithPagination;
+    use WithPagination, WithFileUploads;
 
     public $name;
     public $address;
@@ -17,11 +19,13 @@ class ClientComponent extends Component
     public $postal_code;
     public $phone;
     public $email;
-    public $is_business;
+    public $type = 'individual';
     public $id_number;
     public $tax_number;
     public $client_id;
     public $isEditing = false;
+    public $image;
+    public $image_url;
 
     protected $rules = [
         'name' => 'required|min:3',
@@ -31,9 +35,10 @@ class ClientComponent extends Component
         'postal_code' => 'required',
         'phone' => 'required',
         'email' => 'required|email',
-        'is_business' => 'boolean',
-        'id_number' => 'required_if:is_business,true',
-        'tax_number' => 'required_if:is_business,true',
+        'type' => 'required|in:individual,business',
+        'id_number' => 'required_if:type,business',
+        'tax_number' => 'required_if:type,business',
+        'image' => 'nullable|image|max:2048', // 2MB max
     ];
 
     public function render()
@@ -53,7 +58,7 @@ class ClientComponent extends Component
     {
         $this->validate();
 
-        Client::create([
+        $data = [
             'user_id' => auth()->id(),
             'name' => $this->name,
             'address' => $this->address,
@@ -62,11 +67,18 @@ class ClientComponent extends Component
             'postal_code' => $this->postal_code,
             'phone' => $this->phone,
             'email' => $this->email,
-            'is_business' => $this->is_business,
+            'type' => $this->type,
             'id_number' => $this->id_number,
             'tax_number' => $this->tax_number,
-            'type' => $this->is_business ? 'business' : 'individual',
-        ]);
+        ];
+
+        if ($this->image) {
+            $path = $this->image->store('client-images', 'public');
+            $data['image'] = $path;
+            $this->image_url = asset('storage/' . $path);
+        }
+
+        Client::create($data);
 
         session()->flash('message', 'Client created successfully.');
         $this->resetInputFields();
@@ -84,9 +96,10 @@ class ClientComponent extends Component
         $this->postal_code = $client->postal_code;
         $this->phone = $client->phone;
         $this->email = $client->email;
-        $this->is_business = $client->is_business;
+        $this->type = $client->type;
         $this->id_number = $client->id_number;
         $this->tax_number = $client->tax_number;
+        $this->image_url = $client->image_url;
         $this->isEditing = true;
     }
 
@@ -95,7 +108,7 @@ class ClientComponent extends Component
         $this->validate();
 
         $client = Client::find($this->client_id);
-        $client->update([
+        $data = [
             'name' => $this->name,
             'address' => $this->address,
             'city' => $this->city,
@@ -103,15 +116,37 @@ class ClientComponent extends Component
             'postal_code' => $this->postal_code,
             'phone' => $this->phone,
             'email' => $this->email,
-            'is_business' => $this->is_business,
+            'type' => $this->type,
             'id_number' => $this->id_number,
             'tax_number' => $this->tax_number,
-            'type' => $this->is_business ? 'business' : 'individual',
-        ]);
+        ];
+
+        if ($this->image) {
+            // Delete old image if exists
+            if ($client->image) {
+                Storage::disk('public')->delete($client->image);
+            }
+            $path = $this->image->store('client-images', 'public');
+            $data['image'] = $path;
+            $this->image_url = asset('storage/' . $path);
+        }
+
+        $client->update($data);
 
         session()->flash('message', 'Client updated successfully.');
-        $this->resetInputFields();
-        $this->isEditing = false;
+        $this->dispatch('notify', ['message' => 'Client updated successfully.']);
+    }
+
+    public function removeImage()
+    {
+        $client = Client::findOrFail($this->client_id);
+        if ($client->image) {
+            Storage::disk('public')->delete($client->image);
+            $client->update(['image' => null]);
+            $this->image_url = null;
+            $this->image = null;
+            session()->flash('message', 'Image removed successfully.');
+        }
     }
 
     public function delete($id)
@@ -129,10 +164,12 @@ class ClientComponent extends Component
         $this->postal_code = '';
         $this->phone = '';
         $this->email = '';
-        $this->is_business = false;
+        $this->type = 'individual';
         $this->id_number = '';
         $this->tax_number = '';
         $this->client_id = '';
         $this->isEditing = false;
+        $this->image = null;
+        $this->image_url = null;
     }
 }

@@ -27,17 +27,20 @@ class InvoiceComponent extends Component
     public $tax_amount = 0;
     public $total = 0;
 
-    protected $rules = [
-        'invoice_number' => 'required|unique:invoices,invoice_number',
-        'issue_date' => 'required|date',
-        'due_date' => 'required|date|after:issue_date',
-        'client_id' => 'required|exists:clients,id',
-        'company_id' => 'required|exists:companies,id',
-        'items' => 'required|array|min:1',
-        'items.*.description' => 'required',
-        'items.*.quantity' => 'required|numeric|min:1',
-        'items.*.unit_price' => 'required|numeric|min:0',
-    ];
+    protected function rules()
+    {
+        return [
+            'invoice_number' => 'required|unique:invoices,invoice_number,' . $this->invoice_id,
+            'issue_date' => 'required|date',
+            'due_date' => 'required|date|after:issue_date',
+            'client_id' => 'required|exists:clients,id',
+            'company_id' => 'required|exists:companies,id',
+            'items' => 'required|array|min:1',
+            'items.*.description' => 'required',
+            'items.*.quantity' => 'required|numeric|min:1',
+            'items.*.unit_price' => 'required|numeric|min:0',
+        ];
+    }
 
     public function mount()
     {
@@ -53,6 +56,9 @@ class InvoiceComponent extends Component
         if ($company) {
             $this->company_id = $company->id;
         }
+        $this->items = [
+            ['description' => '', 'quantity' => 1, 'unit_price' => 0]
+        ];
         $this->isEditing = true;
     }
 
@@ -192,6 +198,15 @@ class InvoiceComponent extends Component
         return response()->streamDownload(function() use ($pdf) {
             echo $pdf->output();
         }, "invoice-{$invoice->invoice_number}.pdf");
+    }
+
+    public function previewPdf($id)
+    {
+        $invoice = Invoice::with(['client', 'company', 'items'])->findOrFail($id);
+        $pdf = PDF::loadView('pdf.invoice', compact('invoice'));
+        return response($pdf->output())
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'inline; filename="invoice-'.$invoice->invoice_number.'.pdf"');
     }
 
     private function resetInputFields()
