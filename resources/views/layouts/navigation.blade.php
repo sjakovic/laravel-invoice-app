@@ -21,7 +21,7 @@
                     <x-nav-link :href="route('clients')" :active="request()->routeIs('clients')">
                         {{ __('Clients') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('invoices')" :active="request()->routeIs('invoices')">
+                    <x-nav-link :href="route('invoices.index')" :active="request()->routeIs('invoices.*')">
                         {{ __('Invoices') }}
                     </x-nav-link>
                 </div>
@@ -85,7 +85,7 @@
             <x-responsive-nav-link :href="route('clients')" :active="request()->routeIs('clients')">
                 {{ __('Clients') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('invoices')" :active="request()->routeIs('invoices')">
+            <x-responsive-nav-link :href="route('invoices.index')" :active="request()->routeIs('invoices.*')">
                 {{ __('Invoices') }}
             </x-responsive-nav-link>
         </div>

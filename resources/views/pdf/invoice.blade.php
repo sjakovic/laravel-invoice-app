@@ -46,7 +46,7 @@
             border-collapse: collapse;
             margin: 20px 0;
         }
-        th, td {
+        .table th, .table td {
             padding: 8px;
             border: 1px solid #ddd;
             text-align: left;
@@ -94,16 +94,18 @@
         <table style="width: 100%; margin-bottom: 32px;">
             <tr>
                 <td style="width: 48%; vertical-align: top;">
+                    <div>
                     @if($invoice->company->logo)
                         <img src="{{ storage_path('app/public/' . $invoice->company->logo) }}" class="logo" alt="Company Logo">
                     @endif
+                    </div>
                     <h2 style="font-size: 16px; font-weight: bold; margin-bottom: 8px;">From:</h2>
-                    <p style="font-weight: bold;">{{ $invoice->company->name }}</p>
-                    <p>{{ $invoice->company->address }}</p>
-                    <p>{{ $invoice->company->city }}, {{ $invoice->company->state }} {{ $invoice->company->postal_code }}</p>
-                    <p>{{ $invoice->company->country }}</p>
-                    <p>Phone: {{ $invoice->company->phone }}</p>
-                    <p>Email: {{ $invoice->company->email }}</p>
+                    <div style="font-weight: bold;">{{ $invoice->company->name }}</div>
+                    <div>{{ $invoice->company->address }}</div>
+                    <div>{{ $invoice->company->city }}, {{ $invoice->company->state }} {{ $invoice->company->postal_code }}</div>
+                    <div>{{ $invoice->company->country }}</div>
+                    <div>Phone: {{ $invoice->company->phone }}</div>
+                    <div>Email: {{ $invoice->company->email }}</div>
                 </td>
                 <td style="width: 4%;"></td>
                 <td style="width: 48%; vertical-align: top; text-align: right;">
@@ -111,17 +113,17 @@
                         <img src="{{ storage_path('app/public/' . $invoice->client->image) }}" class="logo" alt="Client Logo">
                     @endif
                     <h2 style="font-size: 16px; font-weight: bold; margin-bottom: 8px;">To:</h2>
-                    <p style="font-weight: bold;">{{ $invoice->client->name }}</p>
-                    <p>{{ $invoice->client->address }}</p>
-                    <p>{{ $invoice->client->city }}, {{ $invoice->client->state }} {{ $invoice->client->postal_code }}</p>
-                    <p>{{ $invoice->client->country }}</p>
-                    <p>Phone: {{ $invoice->client->phone }}</p>
-                    <p>Email: {{ $invoice->client->email }}</p>
+                    <div style="font-weight: bold;">{{ $invoice->client->name }}</div>
+                    <div>{{ $invoice->client->address }}</div>
+                    <div>{{ $invoice->client->city }}, {{ $invoice->client->state }} {{ $invoice->client->postal_code }}</div>
+                    <div>{{ $invoice->client->country }}</div>
+                    <div>Phone: {{ $invoice->client->phone }}</div>
+                    <div>Email: {{ $invoice->client->email }}</div>
                 </td>
             </tr>
         </table>
 
-        <table>
+        <table class="table">
             <thead>
                 <tr>
                     <th>Description</th>
@@ -161,8 +163,6 @@
 
         <div class="footer">
             <p>Thank you for your business!</p>
-            <p>Please make payment to the account specified above.</p>
-            <p>This is a computer-generated document. No signature is required.</p>
         </div>
     </div>
 </body>
