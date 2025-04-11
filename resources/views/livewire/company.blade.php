@@ -85,6 +85,12 @@
                                 <x-text-input wire:model="tax_number" id="tax_number" type="text" class="mt-1 block w-full" />
                                 @error('tax_number') <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
                             </div>
+
+                            <div>
+                                <x-input-label for="authorized_person" :value="__('Authorized Person')" />
+                                <x-text-input wire:model="authorized_person" id="authorized_person" type="text" class="mt-1 block w-full" />
+                                @error('authorized_person') <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
+                            </div>
                         </div>
 
                         <div class="mt-6">

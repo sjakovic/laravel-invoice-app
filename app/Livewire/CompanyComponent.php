@@ -26,7 +26,7 @@ class CompanyComponent extends Component
     public $logo_url;
     public $isEditing = false;
     public $company;
-    public $authorised_person;
+    public $authorized_person;
 
     protected $rules = [
         'name' => 'required|string|max:255',
@@ -39,7 +39,7 @@ class CompanyComponent extends Component
         'id_number' => 'nullable|string|max:255',
         'tax_number' => 'nullable|string|max:255',
         'logo' => 'nullable|image|max:2048', // 2MB max
-        'authorised_person' => 'nullable|string|max:255',
+        'authorized_person' => 'nullable|string|max:255',
     ];
 
     public function mount()
@@ -64,7 +64,7 @@ class CompanyComponent extends Component
         $this->tax_number = '';
         $this->logo = null;
         $this->logo_url = null;
-        $this->authorised_person = '';
+        $this->authorized_person = '';
     }
 
     public function store()
@@ -82,7 +82,7 @@ class CompanyComponent extends Component
             'email' => $this->email,
             'id_number' => $this->id_number,
             'tax_number' => $this->tax_number,
-            'authorised_person' => $this->authorised_person,
+            'authorized_person' => $this->authorized_person,
         ];
 
         if ($this->logo) {
@@ -112,7 +112,7 @@ class CompanyComponent extends Component
         $this->id_number = $company->id_number;
         $this->tax_number = $company->tax_number;
         $this->logo_url = $company->logo_url;
-        $this->authorised_person = $company->authorised_person;
+        $this->authorized_person = $company->authorized_person;
         $this->isEditing = true;
     }
 
@@ -126,13 +126,13 @@ class CompanyComponent extends Component
             'name' => $this->name,
             'address' => $this->address,
             'city' => $this->city,
-            'zip_code' => $this->zip_code,
+            'postal_code' => $this->postal_code,
             'country' => $this->country,
             'phone' => $this->phone,
             'email' => $this->email,
             'id_number' => $this->id_number,
             'tax_number' => $this->tax_number,
-            'authorised_person' => $this->authorised_person,
+            'authorized_person' => $this->authorized_person,
         ];
 
         if ($this->logo) {
