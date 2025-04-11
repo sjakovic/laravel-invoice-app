@@ -18,5 +18,9 @@ class DatabaseSeeder extends Seeder
             'email' => 'sjakovic+invoices-user@gmail.com',
             'password' => \Illuminate\Support\Facades\Hash::make('password123'),
         ]);
+
+        $this->call([
+            DemoSeeder::class,
+        ]);
     }
 }
