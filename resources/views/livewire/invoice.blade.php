@@ -25,11 +25,25 @@
                         </button>
                     </div>
                     <form wire:submit="{{ $invoice_id ? 'update' : 'store' }}">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Invoice Number</label>
-                                <input type="text" wire:model="invoice_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                @error('invoice_number') <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
+                        <div class="flex flex-col space-y-6">
+                            <div class="flex flex-row space-x-4">
+                                <div class="flex-1 p-10">
+                                    <label class="block text-sm font-medium text-gray-700">Invoice Number</label>
+                                    <input type="text" wire:model="invoice_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    @error('invoice_number') <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
+                                </div>
+
+                                <div class="flex-1 px-3">
+                                    <label class="block text-sm font-medium text-gray-700">Issue Date</label>
+                                    <input type="date" wire:model="issue_date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    @error('issue_date') <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
+                                </div>
+
+                                <div class="flex-1">
+                                    <label class="block text-sm font-medium text-gray-700">Due Date</label>
+                                    <input type="date" wire:model="due_date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    @error('due_date') <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
+                                </div>
                             </div>
 
                             <div>
@@ -43,82 +57,79 @@
                                 @error('client_id') <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
                             </div>
 
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Issue Date</label>
-                                <input type="date" wire:model="issue_date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                @error('issue_date') <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Due Date</label>
-                                <input type="date" wire:model="due_date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                @error('due_date') <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
-                        <div class="mt-6">
-                            <h4 class="text-lg font-medium text-gray-900 mb-4">Invoice Items</h4>
-                            @foreach($items as $index => $item)
-                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                                    <div>
+                            <div class="mt-6">
+                                <h4 class="text-lg font-medium text-gray-900 mb-4">Invoice Items</h4>
+                                <div class="flex flex-row space-x-4 mb-2">
+                                    <div class="flex-1">
                                         <label class="block text-sm font-medium text-gray-700">Description</label>
-                                        <input type="text" wire:model="items.{{ $index }}.description" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                        @error("items.{$index}.description") <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
                                     </div>
-
-                                    <div>
+                                    <div class="flex-1">
                                         <label class="block text-sm font-medium text-gray-700">Quantity</label>
-                                        <input type="text" wire:model="items.{{ $index }}.quantity" wire:change="calculateTotals" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                        @error("items.{$index}.quantity") <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
                                     </div>
-
-                                    <div>
+                                    <div class="flex-1">
                                         <label class="block text-sm font-medium text-gray-700">Unit Price</label>
-                                        <input type="text" wire:model="items.{{ $index }}.unit_price" wire:change="calculateTotals" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                        @error("items.{$index}.unit_price") <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
                                     </div>
-
-                                    <div class="flex items-end">
-                                        @if(count($items) > 1)
-                                            <button type="button" wire:click="removeItem({{ $index }})" class="text-red-600 hover:text-red-900">
-                                                Remove
-                                            </button>
-                                        @endif
-                                    </div>
+                                    <div class="w-20"></div>
                                 </div>
-                            @endforeach
+                                @foreach($items as $index => $item)
+                                    <div class="flex flex-row space-x-4 mb-4">
+                                        <div class="flex-1">
+                                            <input type="text" wire:model="items.{{ $index }}.description" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                            @error("items.{$index}.description") <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
+                                        </div>
 
-                            <button type="button" wire:click="addItem" class="mt-4 text-blue-600 hover:text-blue-900">
-                                + Add Item
-                            </button>
-                        </div>
+                                        <div class="flex-1 px-2">
+                                            <input type="text" wire:model="items.{{ $index }}.quantity" wire:change="calculateTotals" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                            @error("items.{$index}.quantity") <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
+                                        </div>
 
-                        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Subtotal</label>
-                                <div class="mt-1 text-lg font-semibold">${{ number_format($subtotal, 2) }}</div>
+                                        <div class="flex-1">
+                                            <input type="text" wire:model="items.{{ $index }}.unit_price" wire:change="calculateTotals" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                            @error("items.{$index}.unit_price") <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
+                                        </div>
+
+                                        <div class="flex items-end w-20 px-2">
+                                            @if(count($items) > 1)
+                                                <button type="button" wire:click="removeItem({{ $index }})" class="text-red-600 hover:text-red-900">
+                                                    Remove
+                                                </button>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endforeach
+
+                                <button type="button" wire:click="addItem" class="mt-4 text-blue-600 hover:text-blue-900">
+                                    + Add Item
+                                </button>
                             </div>
 
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Tax Rate (%)</label>
-                                <input type="text" wire:model="tax_rate" wire:change="calculateTotals" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Subtotal</label>
+                                    <div class="mt-1 text-lg font-semibold">${{ number_format($subtotal, 2) }}</div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Tax Rate (%)</label>
+                                    <input type="text" wire:model="tax_rate" wire:change="calculateTotals" class="mt-1 block w-[100px] rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Tax Amount</label>
+                                    <div class="mt-1 text-lg font-semibold">${{ number_format($tax_amount, 2) }}</div>
+                                </div>
+
+                                <div class="md:col-span-3">
+                                    <label class="block text-sm font-medium text-gray-700">Total</label>
+                                    <div class="mt-1 text-2xl font-bold text-blue-600">${{ number_format($total, 2) }}</div>
+                                </div>
                             </div>
 
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Tax Amount</label>
-                                <div class="mt-1 text-lg font-semibold">${{ number_format($tax_amount, 2) }}</div>
+                            <div class="mt-6">
+                                <x-primary-button>
+                                    {{ $invoice_id ? 'Update Invoice' : 'Create Invoice' }}
+                                </x-primary-button>
                             </div>
-
-                            <div class="md:col-span-3">
-                                <label class="block text-sm font-medium text-gray-700">Total</label>
-                                <div class="mt-1 text-2xl font-bold text-blue-600">${{ number_format($total, 2) }}</div>
-                            </div>
-                        </div>
-
-                        <div class="mt-6">
-                            <x-primary-button>
-                                {{ $invoice_id ? 'Update Invoice' : 'Create Invoice' }}
-                            </x-primary-button>
                         </div>
                     </form>
                 </div>
