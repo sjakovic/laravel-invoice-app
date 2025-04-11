@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\User;
+use App\Models\InvoiceItem;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
@@ -132,6 +133,64 @@ class DemoSeeder extends Seeder
                 'language' => 'en',
                 'notes' => 'Sample invoice for ' . $client->name,
                 'status' => ['unpaid', 'sent', 'paid', 'cancelled'][array_rand(['unpaid', 'sent', 'paid', 'cancelled'])],
+                // Issuer (Company) details
+                'issuer_name' => $company->name,
+                'issuer_address' => $company->address,
+                'issuer_city' => $company->city,
+                'issuer_postal_code' => $company->postal_code,
+                'issuer_country' => $company->country,
+                'issuer_phone' => $company->phone,
+                'issuer_email' => $company->email,
+                'issuer_id_number' => $company->id_number,
+                'issuer_tax_number' => $company->tax_number,
+                'issuer_authorized_person' => $company->authorized_person,
+                'issuer_logo' => $company->logo,
+                // Client details
+                'client_name' => $client->name,
+                'client_address' => $client->address,
+                'client_city' => $client->city,
+                'client_postal_code' => $client->postal_code,
+                'client_country' => $client->country,
+                'client_phone' => $client->phone,
+                'client_email' => $client->email,
+                'client_id_number' => $client->id_number,
+                'client_tax_number' => $client->type === 'business' ? $client->tax_number : 'N/A',
+                'client_type' => $client->type,
+            ]);
+
+            // Create invoice items for each invoice
+            $invoice = Invoice::latest()->first();
+            $itemsCount = rand(1, 5);
+            $totalSubtotal = 0;
+
+            for ($j = 0; $j < $itemsCount; $j++) {
+                $quantity = rand(1, 10);
+                $unitPrice = rand(10, 100) / 10;
+                $total = $quantity * $unitPrice;
+                $totalSubtotal += $total;
+
+                InvoiceItem::create([
+                    'invoice_id' => $invoice->id,
+                    'description' => 'Item ' . ($j + 1),
+                    'quantity' => $quantity,
+                    'unit_price' => $unitPrice,
+                    'total' => $total,
+                    'total_no_tax' => $total,
+                    'tax' => $invoice->tax,
+                    'tax_amount' => $total * $invoice->tax,
+                    'discount' => $invoice->discount,
+                    'discount_amount' => $total * $invoice->discount,
+                ]);
+            }
+
+            // Update invoice totals based on items
+            $invoice->update([
+                'subtotal' => $totalSubtotal,
+                'tax_amount' => $totalSubtotal * $invoice->tax,
+                'discount_amount' => $totalSubtotal * $invoice->discount,
+                'total' => $totalSubtotal + ($totalSubtotal * $invoice->tax) - ($totalSubtotal * $invoice->discount),
+                'total_no_tax' => $totalSubtotal - ($totalSubtotal * $invoice->discount),
+                'total_with_discount' => $totalSubtotal - ($totalSubtotal * $invoice->discount),
             ]);
         }
 
@@ -161,6 +220,64 @@ class DemoSeeder extends Seeder
                 'language' => 'en',
                 'notes' => 'Sample invoice for ' . $client->name,
                 'status' => ['unpaid', 'sent', 'paid', 'cancelled'][array_rand(['unpaid', 'sent', 'paid', 'cancelled'])],
+                // Issuer (Company) details
+                'issuer_name' => $company->name,
+                'issuer_address' => $company->address,
+                'issuer_city' => $company->city,
+                'issuer_postal_code' => $company->postal_code,
+                'issuer_country' => $company->country,
+                'issuer_phone' => $company->phone,
+                'issuer_email' => $company->email,
+                'issuer_id_number' => $company->id_number,
+                'issuer_tax_number' => $company->tax_number,
+                'issuer_authorized_person' => $company->authorized_person,
+                'issuer_logo' => $company->logo,
+                // Client details
+                'client_name' => $client->name,
+                'client_address' => $client->address,
+                'client_city' => $client->city,
+                'client_postal_code' => $client->postal_code,
+                'client_country' => $client->country,
+                'client_phone' => $client->phone,
+                'client_email' => $client->email,
+                'client_id_number' => $client->id_number,
+                'client_tax_number' => $client->type === 'business' ? $client->tax_number : 'N/A',
+                'client_type' => $client->type,
+            ]);
+
+            // Create invoice items for each invoice
+            $invoice = Invoice::latest()->first();
+            $itemsCount = rand(1, 5);
+            $totalSubtotal = 0;
+
+            for ($j = 0; $j < $itemsCount; $j++) {
+                $quantity = rand(1, 10);
+                $unitPrice = rand(10, 100) / 10;
+                $total = $quantity * $unitPrice;
+                $totalSubtotal += $total;
+
+                InvoiceItem::create([
+                    'invoice_id' => $invoice->id,
+                    'description' => 'Item ' . ($j + 1),
+                    'quantity' => $quantity,
+                    'unit_price' => $unitPrice,
+                    'total' => $total,
+                    'total_no_tax' => $total,
+                    'tax' => $invoice->tax,
+                    'tax_amount' => $total * $invoice->tax,
+                    'discount' => $invoice->discount,
+                    'discount_amount' => $total * $invoice->discount,
+                ]);
+            }
+
+            // Update invoice totals based on items
+            $invoice->update([
+                'subtotal' => $totalSubtotal,
+                'tax_amount' => $totalSubtotal * $invoice->tax,
+                'discount_amount' => $totalSubtotal * $invoice->discount,
+                'total' => $totalSubtotal + ($totalSubtotal * $invoice->tax) - ($totalSubtotal * $invoice->discount),
+                'total_no_tax' => $totalSubtotal - ($totalSubtotal * $invoice->discount),
+                'total_with_discount' => $totalSubtotal - ($totalSubtotal * $invoice->discount),
             ]);
         }
     }

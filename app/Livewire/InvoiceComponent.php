@@ -25,7 +25,14 @@ class InvoiceComponent extends Component
     public $subtotal = 0;
     public $tax_rate = 20;
     public $tax_amount = 0;
+    public $discount_rate = 0;
+    public $discount_amount = 0;
     public $total = 0;
+    public $total_no_tax = 0;
+    public $total_with_discount = 0;
+    public $currency = 'USD';
+    public $language = 'en';
+    public $notes = '';
 
     protected function rules()
     {
@@ -39,6 +46,8 @@ class InvoiceComponent extends Component
             'items.*.description' => 'required',
             'items.*.quantity' => 'required|numeric|min:1',
             'items.*.unit_price' => 'required|numeric|min:0',
+            'currency' => 'required|string|size:3',
+            'language' => 'required|string|size:2',
         ];
     }
 
@@ -90,7 +99,10 @@ class InvoiceComponent extends Component
             $this->subtotal += $item['quantity'] * $item['unit_price'];
         }
         $this->tax_amount = $this->subtotal * ($this->tax_rate / 100);
-        $this->total = $this->subtotal + $this->tax_amount;
+        $this->discount_amount = $this->subtotal * ($this->discount_rate / 100);
+        $this->total_no_tax = $this->subtotal - $this->discount_amount;
+        $this->total_with_discount = $this->subtotal - $this->discount_amount;
+        $this->total = $this->subtotal + $this->tax_amount - $this->discount_amount;
     }
 
     public function store()
@@ -104,6 +116,8 @@ class InvoiceComponent extends Component
             return;
         }
 
+        $client = Client::findOrFail($this->client_id);
+
         $invoice = Invoice::create([
             'user_id' => auth()->id(),
             'invoice_number' => $this->invoice_number,
@@ -112,8 +126,40 @@ class InvoiceComponent extends Component
             'client_id' => $this->client_id,
             'company_id' => $company->id,
             'subtotal' => $this->subtotal,
-            'tax' => $this->tax_amount,
+            'tax' => $this->tax_rate,
+            'tax_amount' => $this->tax_amount,
+            'discount' => $this->discount_rate,
+            'discount_amount' => $this->discount_amount,
             'total' => $this->total,
+            'total_no_tax' => $this->total_no_tax,
+            'total_with_discount' => $this->total_with_discount,
+            'currency' => $this->currency,
+            'language' => $this->language,
+            'notes' => $this->notes,
+            'status' => 'unpaid',
+            // Issuer (Company) details
+            'issuer_name' => $company->name,
+            'issuer_address' => $company->address,
+            'issuer_city' => $company->city,
+            'issuer_postal_code' => $company->postal_code,
+            'issuer_country' => $company->country,
+            'issuer_phone' => $company->phone,
+            'issuer_email' => $company->email,
+            'issuer_id_number' => $company->id_number,
+            'issuer_tax_number' => $company->tax_number,
+            'issuer_authorized_person' => $company->authorized_person,
+            'issuer_logo' => $company->logo,
+            // Client details
+            'client_name' => $client->name,
+            'client_address' => $client->address,
+            'client_city' => $client->city,
+            'client_postal_code' => $client->postal_code,
+            'client_country' => $client->country,
+            'client_phone' => $client->phone,
+            'client_email' => $client->email,
+            'client_id_number' => $client->id_number,
+            'client_tax_number' => $client->tax_number,
+            'client_type' => $client->type,
         ]);
 
         foreach ($this->items as $item) {
@@ -146,6 +192,11 @@ class InvoiceComponent extends Component
                 'unit_price' => $item->unit_price,
             ];
         })->toArray();
+        $this->tax_rate = $invoice->tax;
+        $this->discount_rate = $invoice->discount;
+        $this->currency = $invoice->currency;
+        $this->language = $invoice->language;
+        $this->notes = $invoice->notes;
         $this->isEditing = true;
         $this->calculateTotals();
     }
@@ -156,6 +207,9 @@ class InvoiceComponent extends Component
         $this->calculateTotals();
 
         $invoice = Invoice::find($this->invoice_id);
+        $company = Company::find($invoice->company_id);
+        $client = Client::find($invoice->client_id);
+
         $invoice->update([
             'invoice_number' => $this->invoice_number,
             'issue_date' => $this->issue_date,
@@ -163,8 +217,39 @@ class InvoiceComponent extends Component
             'client_id' => $this->client_id,
             'company_id' => $this->company_id,
             'subtotal' => $this->subtotal,
-            'tax' => $this->tax_amount,
+            'tax' => $this->tax_rate,
+            'tax_amount' => $this->tax_amount,
+            'discount' => $this->discount_rate,
+            'discount_amount' => $this->discount_amount,
             'total' => $this->total,
+            'total_no_tax' => $this->total_no_tax,
+            'total_with_discount' => $this->total_with_discount,
+            'currency' => $this->currency,
+            'language' => $this->language,
+            'notes' => $this->notes,
+            // Issuer (Company) details
+            'issuer_name' => $company->name,
+            'issuer_address' => $company->address,
+            'issuer_city' => $company->city,
+            'issuer_postal_code' => $company->postal_code,
+            'issuer_country' => $company->country,
+            'issuer_phone' => $company->phone,
+            'issuer_email' => $company->email,
+            'issuer_id_number' => $company->id_number,
+            'issuer_tax_number' => $company->tax_number,
+            'issuer_authorized_person' => $company->authorized_person,
+            'issuer_logo' => $company->logo,
+            // Client details
+            'client_name' => $client->name,
+            'client_address' => $client->address,
+            'client_city' => $client->city,
+            'client_postal_code' => $client->postal_code,
+            'client_country' => $client->country,
+            'client_phone' => $client->phone,
+            'client_email' => $client->email,
+            'client_id_number' => $client->id_number,
+            'client_tax_number' => $client->tax_number,
+            'client_type' => $client->type,
         ]);
 
         // Delete existing items
@@ -220,7 +305,15 @@ class InvoiceComponent extends Component
         $this->invoice_id = '';
         $this->isEditing = false;
         $this->subtotal = 0;
+        $this->tax_rate = 20;
         $this->tax_amount = 0;
+        $this->discount_rate = 0;
+        $this->discount_amount = 0;
         $this->total = 0;
+        $this->total_no_tax = 0;
+        $this->total_with_discount = 0;
+        $this->currency = 'USD';
+        $this->language = 'en';
+        $this->notes = '';
     }
 }

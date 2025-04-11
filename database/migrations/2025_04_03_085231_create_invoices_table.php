@@ -31,6 +31,32 @@ return new class extends Migration
             $table->string('language')->default('en');
             $table->text('notes')->nullable();
             $table->enum('status', ['unpaid', 'sent', 'paid', 'cancelled'])->default('draft');
+
+            // Issuer (Company) details
+            $table->string('issuer_name');
+            $table->string('issuer_address');
+            $table->string('issuer_city');
+            $table->string('issuer_postal_code');
+            $table->string('issuer_country');
+            $table->string('issuer_phone');
+            $table->string('issuer_email');
+            $table->string('issuer_id_number');
+            $table->string('issuer_tax_number');
+            $table->string('issuer_authorized_person');
+            $table->string('issuer_logo')->nullable();
+
+            // Client details
+            $table->string('client_name');
+            $table->string('client_address');
+            $table->string('client_city');
+            $table->string('client_postal_code');
+            $table->string('client_country');
+            $table->string('client_phone');
+            $table->string('client_email');
+            $table->string('client_id_number');
+            $table->string('client_tax_number');
+            $table->string('client_type');
+            
             $table->timestamps();
         });
     }
