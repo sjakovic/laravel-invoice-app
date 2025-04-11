@@ -68,13 +68,13 @@
 
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700">Quantity</label>
-                                        <input type="number" wire:model="items.{{ $index }}.quantity" wire:change="calculateTotals" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                        <input type="text" wire:model="items.{{ $index }}.quantity" wire:change="calculateTotals" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                         @error("items.{$index}.quantity") <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
                                     </div>
 
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700">Unit Price</label>
-                                        <input type="number" step="0.01" wire:model="items.{{ $index }}.unit_price" wire:change="calculateTotals" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                        <input type="text" wire:model="items.{{ $index }}.unit_price" wire:change="calculateTotals" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                         @error("items.{$index}.unit_price") <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
                                     </div>
 
@@ -101,7 +101,7 @@
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Tax Rate (%)</label>
-                                <input type="number" wire:model="tax_rate" wire:change="calculateTotals" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <input type="text" wire:model="tax_rate" wire:change="calculateTotals" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
 
                             <div>
