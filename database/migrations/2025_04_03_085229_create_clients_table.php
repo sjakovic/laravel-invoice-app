@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('city');
             $table->string('postal_code');
-            $table->string('state');
+            $table->string('country');
             $table->string('phone');
             $table->string('email');
             $table->string('id_number');

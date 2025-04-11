@@ -18,7 +18,8 @@ class Company extends Model
         'email',
         'id_number',
         'tax_number',
-        'logo'
+        'logo',
+        'authorized_person',
     ];
 
     protected $appends = ['logo_url'];

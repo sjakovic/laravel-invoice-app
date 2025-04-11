@@ -16,7 +16,7 @@ class CompanyComponent extends Component
     public $name;
     public $address;
     public $city;
-    public $zip_code;
+    public $postal_code;
     public $country;
     public $phone;
     public $email;
@@ -26,18 +26,20 @@ class CompanyComponent extends Component
     public $logo_url;
     public $isEditing = false;
     public $company;
+    public $authorised_person;
 
     protected $rules = [
         'name' => 'required|string|max:255',
         'address' => 'required|string|max:255',
         'city' => 'required|string|max:255',
-        'zip_code' => 'required|string|max:20',
+        'postal_code' => 'required|string|max:20',
         'country' => 'required|string|max:255',
         'phone' => 'required|string|max:20',
         'email' => 'required|email|max:255',
         'id_number' => 'nullable|string|max:255',
         'tax_number' => 'nullable|string|max:255',
         'logo' => 'nullable|image|max:2048', // 2MB max
+        'authorised_person' => 'nullable|string|max:255',
     ];
 
     public function mount()
@@ -54,7 +56,7 @@ class CompanyComponent extends Component
         $this->name = '';
         $this->address = '';
         $this->city = '';
-        $this->zip_code = '';
+        $this->postal_code = '';
         $this->country = '';
         $this->phone = '';
         $this->email = '';
@@ -62,6 +64,7 @@ class CompanyComponent extends Component
         $this->tax_number = '';
         $this->logo = null;
         $this->logo_url = null;
+        $this->authorised_person = '';
     }
 
     public function store()
@@ -73,12 +76,13 @@ class CompanyComponent extends Component
             'name' => $this->name,
             'address' => $this->address,
             'city' => $this->city,
-            'zip_code' => $this->zip_code,
+            'postal_code' => $this->postal_code,
             'country' => $this->country,
             'phone' => $this->phone,
             'email' => $this->email,
             'id_number' => $this->id_number,
             'tax_number' => $this->tax_number,
+            'authorised_person' => $this->authorised_person,
         ];
 
         if ($this->logo) {
@@ -101,13 +105,14 @@ class CompanyComponent extends Component
         $this->name = $company->name;
         $this->address = $company->address;
         $this->city = $company->city;
-        $this->zip_code = $company->zip_code;
+        $this->postal_code = $company->postal_code;
         $this->country = $company->country;
         $this->phone = $company->phone;
         $this->email = $company->email;
         $this->id_number = $company->id_number;
         $this->tax_number = $company->tax_number;
         $this->logo_url = $company->logo_url;
+        $this->authorised_person = $company->authorised_person;
         $this->isEditing = true;
     }
 
@@ -116,7 +121,7 @@ class CompanyComponent extends Component
         $this->validate();
 
         $company = Company::findOrFail($this->company_id);
-        
+
         $data = [
             'name' => $this->name,
             'address' => $this->address,
@@ -127,6 +132,7 @@ class CompanyComponent extends Component
             'email' => $this->email,
             'id_number' => $this->id_number,
             'tax_number' => $this->tax_number,
+            'authorised_person' => $this->authorised_person,
         ];
 
         if ($this->logo) {

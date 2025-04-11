@@ -63,9 +63,9 @@
                             </div>
 
                             <div>
-                                <x-input-label for="zip_code" :value="__('ZIP Code')" />
-                                <x-text-input wire:model="zip_code" id="zip_code" type="text" class="mt-1 block w-full" />
-                                @error('zip_code') <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
+                                <x-input-label for="postal_code" :value="__('Postal code')" />
+                                <x-text-input wire:model="postal_code" id="postal_code" type="text" class="mt-1 block w-full" />
+                                @error('postal_code') <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
                             </div>
 
                             <div>
