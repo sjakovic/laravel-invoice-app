@@ -163,12 +163,18 @@ class InvoiceComponent extends Component
         ]);
 
         foreach ($this->items as $item) {
+            $total = $item['quantity'] * $item['unit_price'];
             InvoiceItem::create([
                 'invoice_id' => $invoice->id,
                 'description' => $item['description'],
                 'quantity' => $item['quantity'],
                 'unit_price' => $item['unit_price'],
-                'total' => $item['quantity'] * $item['unit_price'],
+                'total' => $total,
+                'total_no_tax' => $total,
+                'tax' => $this->tax_rate,
+                'tax_amount' => $total * ($this->tax_rate / 100),
+                'discount' => $this->discount_rate,
+                'discount_amount' => $total * ($this->discount_rate / 100),
             ]);
         }
 
@@ -257,12 +263,18 @@ class InvoiceComponent extends Component
 
         // Create new items
         foreach ($this->items as $item) {
+            $total = $item['quantity'] * $item['unit_price'];
             InvoiceItem::create([
                 'invoice_id' => $invoice->id,
                 'description' => $item['description'],
                 'quantity' => $item['quantity'],
                 'unit_price' => $item['unit_price'],
-                'total' => $item['quantity'] * $item['unit_price'],
+                'total' => $total,
+                'total_no_tax' => $total,
+                'tax' => $this->tax_rate,
+                'tax_amount' => $total * ($this->tax_rate / 100),
+                'discount' => $this->discount_rate,
+                'discount_amount' => $total * ($this->discount_rate / 100),
             ]);
         }
 
