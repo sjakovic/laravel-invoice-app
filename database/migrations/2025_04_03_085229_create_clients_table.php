@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('id_number');
             $table->string('tax_number');
             $table->enum('type', ['individual', 'business']);
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

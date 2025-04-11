@@ -18,6 +18,11 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('unit_price', 10, 2);
             $table->decimal('total', 10, 2);
+            $table->decimal('total_no_tax', 10, 2);
+            $table->decimal('tax', 10, 2);
+            $table->decimal('tax_amount', 10, 2);
+            $table->decimal('discount', 10, 2);
+            $table->decimal('discount_amount', 10, 2);
             $table->timestamps();
         });
     }

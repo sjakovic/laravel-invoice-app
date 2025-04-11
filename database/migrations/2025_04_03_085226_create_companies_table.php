@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('email');
             $table->string('id_number');
             $table->string('tax_number');
+            $table->string('authorized_person');
+            $table->string('logo')->nullable();
             $table->timestamps();
         });
     }

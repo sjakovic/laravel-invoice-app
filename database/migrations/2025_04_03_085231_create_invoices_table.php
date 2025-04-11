@@ -20,10 +20,17 @@ return new class extends Migration
             $table->date('issue_date');
             $table->date('due_date');
             $table->decimal('subtotal', 10, 2);
-            $table->decimal('tax', 10, 2);
+            $table->decimal('tax', 10, 2)->default(0);
+            $table->decimal('tax_amount', 10, 2)->default(0);
+            $table->decimal('discount', 10, 2)->default(0);
+            $table->decimal('discount_amount', 10, 2)->default(0);
             $table->decimal('total', 10, 2);
+            $table->decimal('total_no_tax', 10, 2);
+            $table->decimal('total_with_discount', 10, 2);
+            $table->string('currency')->default('USD');
+            $table->string('language')->default('en');
             $table->text('notes')->nullable();
-            $table->enum('status', ['draft', 'sent', 'paid', 'cancelled'])->default('draft');
+            $table->enum('status', ['unpaid', 'sent', 'paid', 'cancelled'])->default('draft');
             $table->timestamps();
         });
     }
