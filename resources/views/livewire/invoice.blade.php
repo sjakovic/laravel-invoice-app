@@ -47,10 +47,7 @@
                                     <select wire:model="currency" id="currency" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-2 py-1 text-sm">
                                         <option value="USD">USD</option>
                                         <option value="EUR">EUR</option>
-                                        <option value="GBP">GBP</option>
-                                        <option value="JPY">JPY</option>
-                                        <option value="CAD">CAD</option>
-                                        <option value="AUD">AUD</option>
+                                        <option value="RSD">RSD</option>
                                     </select>
                                     @error('currency') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                                 </div>
