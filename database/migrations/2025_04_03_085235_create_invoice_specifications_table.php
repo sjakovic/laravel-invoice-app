@@ -15,6 +15,7 @@ return new class extends Migration
             $table->text('description');
             $table->integer('timespent'); // in minutes
             $table->decimal('price_per_hour', 10, 2);
+            $table->decimal('total', 10, 2);
             $table->enum('type', ['regular', 'overtime', 'holiday'])->default('regular');
             $table->timestamps();
         });
