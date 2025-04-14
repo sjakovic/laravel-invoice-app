@@ -290,20 +290,23 @@ class InvoiceComponent extends Component
 
     public function downloadPdf($id)
     {
-        $invoice = Invoice::with(['client', 'company', 'items'])->findOrFail($id);
-        $pdf = PDF::loadView('pdf.invoice', compact('invoice'));
+        $invoice = Invoice::findOrFail($id);
+        app()->setLocale($invoice->language);
+        $pdf = Pdf::loadView('pdf.invoice', ['invoice' => $invoice]);
         return response()->streamDownload(function() use ($pdf) {
             echo $pdf->output();
-        }, "invoice-{$invoice->invoice_number}.pdf");
+        }, "invoice-{$invoice->invoice_number}.pdf", [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="invoice-'.$invoice->invoice_number.'.pdf"'
+        ]);
     }
 
     public function previewPdf($id)
     {
-        $invoice = Invoice::with(['client', 'company', 'items'])->findOrFail($id);
-        $pdf = PDF::loadView('pdf.invoice', compact('invoice'));
-        return response($pdf->output())
-            ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', 'inline; filename="invoice-'.$invoice->invoice_number.'.pdf"');
+        $invoice = Invoice::findOrFail($id);
+        app()->setLocale($invoice->language);
+        $pdf = Pdf::loadView('pdf.invoice', ['invoice' => $invoice]);
+        return $pdf->stream('invoice-' . $invoice->invoice_number . '.pdf');
     }
 
     private function resetInputFields()

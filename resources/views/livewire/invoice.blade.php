@@ -54,6 +54,14 @@
                                     </select>
                                     @error('currency') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                                 </div>
+                                <div class="flex-1">
+                                    <label for="language" class="block text-sm font-medium text-gray-700">Language</label>
+                                    <select wire:model="language" id="language" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-2 py-1 text-sm">
+                                        <option value="en">English</option>
+                                        <option value="sr">Serbian</option>
+                                    </select>
+                                    @error('language') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                </div>
                             </div>
 
                             <div>

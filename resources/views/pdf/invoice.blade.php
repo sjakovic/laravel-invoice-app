@@ -6,7 +6,7 @@
     <title>{{ __('invoice.invoice') }} #{{ $invoice->invoice_number }}</title>
     <style>
         body {
-            font-family: DejaVu Sans;
+            font-family: DejaVu Sans, Arial, sans-serif;
             font-size: 12px;
         }
         .container {
@@ -151,7 +151,7 @@
                     @endif
                     @if($invoice->discount > 0)
                     <tr>
-                        <td colspan="3" style="text-align: right;">Discount ({{ $invoice->discount_rate }}%):</td>
+                        <td colspan="3" style="text-align: right;">{{ __('invoice.discount') }} ({{ $invoice->discount_rate }}%):</td>
                         <td style="text-align: right;">{{ number_format($invoice->discount_amount, 2) }}</td>
                     </tr>
                     @endif

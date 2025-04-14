@@ -16,4 +16,5 @@ return [
     'phone' => 'Телефон',
     'email' => 'Е-пошта',
     'tax_number' => 'ПИБ',
+    'discount' => 'Попуст',
 ]; 

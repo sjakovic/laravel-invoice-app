@@ -16,4 +16,5 @@ return [
     'phone' => 'Phone',
     'email' => 'Email',
     'tax_number' => 'EIN',
+    'discount' => 'Discount',
 ]; 
