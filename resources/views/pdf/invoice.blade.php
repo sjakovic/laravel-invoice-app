@@ -47,12 +47,6 @@
         .text-right {
             text-align: right;
         }
-        .footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 10px;
-            color: #666;
-        }
         .logo {
             max-width: 150px;
             max-height: 100px;
@@ -167,10 +161,6 @@
                     </tr>
                 </tfoot>
             </table>
-        </div>
-
-        <div class="footer">
-            <p>{{ $invoice->issuer_name }}</p>
         </div>
     </div>
 </body>
