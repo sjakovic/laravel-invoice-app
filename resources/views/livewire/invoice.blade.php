@@ -27,22 +27,32 @@
                     <form wire:submit="{{ $invoice_id ? 'update' : 'store' }}">
                         <div class="flex flex-col space-y-6">
                             <div class="flex flex-row space-x-4">
-                                <div class="flex-1 p-10">
-                                    <label class="block text-sm font-medium text-gray-700">Invoice Number</label>
-                                    <input type="text" wire:model="invoice_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                    @error('invoice_number') <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
-                                </div>
-
-                                <div class="flex-1 px-3">
-                                    <label class="block text-sm font-medium text-gray-700">Issue Date</label>
-                                    <input type="date" wire:model="issue_date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                    @error('issue_date') <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
-                                </div>
-
                                 <div class="flex-1">
-                                    <label class="block text-sm font-medium text-gray-700">Due Date</label>
-                                    <input type="date" wire:model="due_date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                    @error('due_date') <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
+                                    <label for="invoice_number" class="block text-sm font-medium text-gray-700">Invoice Number</label>
+                                    <input type="text" wire:model="invoice_number" id="invoice_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-2 py-1 text-sm">
+                                    @error('invoice_number') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="flex-1">
+                                    <label for="issue_date" class="block text-sm font-medium text-gray-700">Issue Date</label>
+                                    <input type="date" wire:model="issue_date" id="issue_date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-2 py-1 text-sm">
+                                    @error('issue_date') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="flex-1">
+                                    <label for="due_date" class="block text-sm font-medium text-gray-700">Due Date</label>
+                                    <input type="date" wire:model="due_date" id="due_date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-2 py-1 text-sm">
+                                    @error('due_date') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="flex-1">
+                                    <label for="currency" class="block text-sm font-medium text-gray-700">Currency</label>
+                                    <select wire:model="currency" id="currency" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-2 py-1 text-sm">
+                                        <option value="USD">USD</option>
+                                        <option value="EUR">EUR</option>
+                                        <option value="GBP">GBP</option>
+                                        <option value="JPY">JPY</option>
+                                        <option value="CAD">CAD</option>
+                                        <option value="AUD">AUD</option>
+                                    </select>
+                                    @error('currency') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                                 </div>
                             </div>
 

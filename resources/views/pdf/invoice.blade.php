@@ -93,29 +93,29 @@
                         <div>{{ $invoice->issuer_country }}</div>
                         <div>{{ __('invoice.tax_number') }}: {{ $invoice->issuer_tax_number }}</div>
                         <div class="delimiter"></div>
-                        <div class="bill-to">{{ __('invoice.bill_to') }}</div>
+                        <div class="bill-to">{{ __('invoice.bill_to') }}:</div>
                         <div><strong>{{ $invoice->client_name }}</strong></div>
                         <div>{{ $invoice->client_address }}</div>
                         <div>{{ $invoice->client_city }}, {{ $invoice->client_state }} {{ $invoice->client_zip }}</div>
                         <div>{{ $invoice->client_country }}</div>
                         <div>{{ __('invoice.tax_number') }}: {{ $invoice->client_tax_number }}</div>
                     </td>
-                    <td class="text-right">
+                    <td style="text-align: right;">
                         <div class="invoice-info-title">{{ __('invoice.invoice') }}</div>
                         <div class="invoice-number"># {{ $invoice->invoice_number }}</div>
                         <div class="delimiter"></div>
-                        <table class="invoice-info-table text-right">
+                        <table class="invoice-info-table" style="text-align: right;">
                             <tr>
-                                <th class="text-right">{{ __('invoice.issue_date') }}</th>
-                                <td class="text-right">{{ $invoice->issue_date->format('d.m.Y.') }}</td>
+                                <th style="text-align: right;">{{ __('invoice.issue_date') }}:</th>
+                                <td style="text-align: right;">{{ $invoice->issue_date->format('d.m.Y.') }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">{{ __('invoice.due_date') }}</th>
-                                <td class="text-right">{{ $invoice->due_date->format('d.m.Y.') }}</td>
+                                <th style="text-align: right;">{{ __('invoice.due_date') }}:</th>
+                                <td style="text-align: right;">{{ $invoice->due_date->format('d.m.Y.') }}</td>
                             </tr>
                             <tr style="background-color: #f5f5f5;">
-                                <th class="text-right">{{ __('invoice.total') }}</th>
-                                <th class="text-right">{{ number_format($invoice->total, 2) }}</th>
+                                <th style="text-align: right;">{{ __('invoice.total') }}:</th>
+                                <th style="text-align: right;">{{ $invoice->currency }} {{ number_format($invoice->total, 2) }}</th>
                             </tr>
                         </table>
                     </td>
@@ -128,34 +128,42 @@
             <table>
                 <thead>
                     <tr>
-                        <th>{{ __('invoice.description') }}</th>
-                        <th>{{ __('invoice.quantity') }}</th>
-                        <th>{{ __('invoice.unit_price') }}</th>
-                        <th>{{ __('invoice.total') }}</th>
+                        <th style="text-align: center;">{{ __('invoice.description') }}</th>
+                        <th style="text-align: center;">{{ __('invoice.quantity') }}</th>
+                        <th style="text-align: center;">{{ __('invoice.unit_price') }}</th>
+                        <th style="text-align: center;">{{ __('invoice.total') }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($invoice->items as $item)
                         <tr>
                             <td>{{ $item['description'] }}</td>
-                            <td>{{ $item['quantity'] }}</td>
-                            <td>{{ number_format($item['unit_price'], 2) }}</td>
-                            <td>{{ number_format($item['total'], 2) }}</td>
+                            <td style="text-align: center;">{{ $item['quantity'] }}</td>
+                            <td style="text-align: right;">{{ number_format($item['unit_price'], 2) }}</td>
+                            <td style="text-align: right;">{{ number_format($item['total'], 2) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3" class="text-right"><strong>{{ __('invoice.subtotal') }}:</strong></td>
-                        <td><strong>{{ number_format($invoice->total, 2) }}</strong></td>
+                        <td colspan="3" style="text-align: right;">{{ __('invoice.subtotal') }}:</td>
+                        <td style="text-align: right;">{{ number_format($invoice->subtotal, 2) }}</td>
                     </tr>
+                    @if($invoice->tax_rate > 0)
                     <tr>
-                        <td colspan="3" class="text-right"><strong>{{ __('invoice.tax') }} ({{ $invoice->tax_rate }}%):</strong></td>
-                        <td><strong>{{ number_format($invoice->tax, 2) }}</strong></td>
+                        <td colspan="3" style="text-align: right;">{{ __('invoice.tax') }} ({{ $invoice->tax_rate }}%):</td>
+                        <td style="text-align: right;">{{ number_format($invoice->tax_amount, 2) }}</td>
                     </tr>
+                    @endif
+                    @if($invoice->discount > 0)
                     <tr>
-                        <td colspan="3" class="text-right"><strong>{{ __('invoice.total') }}:</strong></td>
-                        <td><strong>{{ number_format($invoice->total, 2) }}</strong></td>
+                        <td colspan="3" style="text-align: right;">Discount ({{ $invoice->discount_rate }}%):</td>
+                        <td style="text-align: right;">{{ number_format($invoice->discount_amount, 2) }}</td>
+                    </tr>
+                    @endif
+                    <tr style="background-color: #f5f5f5;">
+                        <td colspan="3" style="text-align: right;"><strong>{{ __('invoice.total') }}:</strong></td>
+                        <td style="text-align: right;"><strong>{{ $invoice->currency }} {{ number_format($invoice->total, 2) }}</strong></td>
                     </tr>
                 </tfoot>
             </table>
