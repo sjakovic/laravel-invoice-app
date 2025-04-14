@@ -37,7 +37,7 @@ class InvoiceComponent extends Component
     protected function rules()
     {
         return [
-            'invoice_number' => 'required|unique:invoices,invoice_number,' . $this->invoice_id,
+            'invoice_number' => 'required|unique:invoices,invoice_number,' . ($this->invoice_id ?: 'NULL'),
             'issue_date' => 'required|date',
             'due_date' => 'required|date|after:issue_date',
             'client_id' => 'required|exists:clients,id',
@@ -158,7 +158,7 @@ class InvoiceComponent extends Component
             'client_phone' => $client->phone,
             'client_email' => $client->email,
             'client_id_number' => $client->id_number,
-            'client_tax_number' => $client->tax_number,
+            'client_tax_number' => $client->tax_number ?? 'N/A',
             'client_type' => $client->type,
         ]);
 
