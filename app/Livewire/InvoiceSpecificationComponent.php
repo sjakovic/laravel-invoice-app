@@ -17,7 +17,8 @@ class InvoiceSpecificationComponent extends Component
         'description' => '',
         'timespent' => '',
         'price_per_hour' => '',
-        'total' => ''
+        'total' => '',
+        'type' => 'regular'
     ];
 
     protected $rules = [
@@ -25,6 +26,7 @@ class InvoiceSpecificationComponent extends Component
         'editingSpecification.description' => 'required',
         'editingSpecification.timespent' => 'required|integer|min:1',
         'editingSpecification.price_per_hour' => 'required|numeric|min:0',
+        'editingSpecification.type' => 'required|in:regular,overtime,holiday',
     ];
 
     public function mount(Invoice $invoice)
@@ -49,7 +51,8 @@ class InvoiceSpecificationComponent extends Component
             'description' => '',
             'timespent' => '',
             'price_per_hour' => '',
-            'total' => ''
+            'total' => '',
+            'type' => 'regular'
         ];
     }
 
@@ -66,14 +69,21 @@ class InvoiceSpecificationComponent extends Component
         $this->validate();
         $this->calculateTotal();
 
-        InvoiceSpecification::create([
+        \Log::info('Editing Specification Data:', $this->editingSpecification);
+
+        $data = [
             'invoice_id' => $this->invoice_id,
             'date' => $this->editingSpecification['date'],
             'description' => $this->editingSpecification['description'],
             'timespent' => $this->editingSpecification['timespent'],
             'price_per_hour' => $this->editingSpecification['price_per_hour'],
-            'total' => $this->editingSpecification['total']
-        ]);
+            'total' => $this->editingSpecification['total'],
+            'type' => $this->editingSpecification['type']
+        ];
+
+        \Log::info('Data being saved:', $data);
+
+        InvoiceSpecification::create($data);
 
         $this->cancelEdit();
         $this->loadSpecifications();
@@ -87,7 +97,8 @@ class InvoiceSpecificationComponent extends Component
             'description' => '',
             'timespent' => '',
             'price_per_hour' => '',
-            'total' => ''
+            'total' => '',
+            'type' => 'regular'
         ];
     }
 

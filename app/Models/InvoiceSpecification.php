@@ -12,7 +12,8 @@ class InvoiceSpecification extends Model
         'description',
         'timespent',
         'price_per_hour',
-        'total'
+        'total',
+        'type'
     ];
 
     protected $casts = [

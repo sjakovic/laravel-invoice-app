@@ -16,6 +16,7 @@
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time Spent</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price/Hour</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
@@ -32,6 +33,14 @@
                                         <td class="px-6 py-4">
                                             <textarea wire:model="editingSpecification.description" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"></textarea>
                                             @error('editingSpecification.description') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <select wire:model="editingSpecification.type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                                <option value="regular">Regular</option>
+                                                <option value="overtime">Overtime</option>
+                                                <option value="holiday">Holiday</option>
+                                            </select>
+                                            @error('editingSpecification.type') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                                         </td>
                                         <td class="px-6 py-4">
                                             <input type="number" wire:model="editingSpecification.timespent" wire:change="calculateTotal" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
@@ -61,6 +70,7 @@
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($specification['date'])->format('Y-m-d') }}</td>
                                         <td class="px-6 py-4">{{ $specification['description'] }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ ucfirst($specification['type']) }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $specification['timespent'] }} minutes</td>
                                         <td class="px-6 py-4 whitespace-nowrap">${{ number_format($specification['price_per_hour'], 2) }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">${{ number_format($specification['total'], 2) }}</td>
