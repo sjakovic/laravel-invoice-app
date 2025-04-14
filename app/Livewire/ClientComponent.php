@@ -17,6 +17,7 @@ class ClientComponent extends Component
     public $city;
     public $state;
     public $postal_code;
+    public $country;
     public $phone;
     public $email;
     public $type = 'individual';
@@ -33,6 +34,7 @@ class ClientComponent extends Component
         'city' => 'required',
         'state' => 'required',
         'postal_code' => 'required',
+        'country' => 'required',
         'phone' => 'required',
         'email' => 'required|email',
         'type' => 'required|in:individual,business',
@@ -65,6 +67,7 @@ class ClientComponent extends Component
             'city' => $this->city,
             'state' => $this->state,
             'postal_code' => $this->postal_code,
+            'country' => $this->country,
             'phone' => $this->phone,
             'email' => $this->email,
             'type' => $this->type,
@@ -94,6 +97,7 @@ class ClientComponent extends Component
         $this->city = $client->city;
         $this->state = $client->state;
         $this->postal_code = $client->postal_code;
+        $this->country = $client->country;
         $this->phone = $client->phone;
         $this->email = $client->email;
         $this->type = $client->type;
@@ -114,6 +118,7 @@ class ClientComponent extends Component
             'city' => $this->city,
             'state' => $this->state,
             'postal_code' => $this->postal_code,
+            'country' => $this->country,
             'phone' => $this->phone,
             'email' => $this->email,
             'type' => $this->type,
@@ -162,6 +167,7 @@ class ClientComponent extends Component
         $this->city = '';
         $this->state = '';
         $this->postal_code = '';
+        $this->country = '';
         $this->phone = '';
         $this->email = '';
         $this->type = 'individual';

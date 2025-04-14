@@ -84,6 +84,12 @@
                             </div>
 
                             <div>
+                                <label class="block text-sm font-medium text-gray-700">Country</label>
+                                <input type="text" wire:model="country" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                @error('country') <span class="text-red-600 text-sm font-bold mt-1 block">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div>
                                 <label class="block text-sm font-medium text-gray-700">Client Type</label>
                                 <select wire:model.live="type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                     <option value="individual">Individual</option>
