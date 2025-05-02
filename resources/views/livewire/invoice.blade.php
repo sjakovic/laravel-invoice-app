@@ -172,36 +172,31 @@
                                                 ${{ number_format($invoice->total, 2) }}
                                             </p>
                                         </div>
-                                        <div class="ml-4 flex-shrink-0 flex space-x-2">
-                                            Invoice &nbsp;
-                                            <button wire:click="edit({{ $invoice->id }})" class="text-indigo-600 hover:text-indigo-900" title="Edit Invoice">
-                                                Edit
-                                            </button>
-                                            &nbsp;|&nbsp;
-                                            <a href="{{ route('invoices.preview', $invoice->id) }}" target="_blank" class="text-blue-600 hover:text-blue-900" title="Preview PDF">
-                                                Preview
-                                            </a>
-                                            <a href="{{ route('invoices.specifications.preview', $invoice->id) }}" target="_blank" class="text-blue-600 hover:text-blue-900" title="Preview Specifications PDF">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                </svg>
-                                            </a>
-                                            <a href="{{ route('invoices.specifications', $invoice->id) }}" class="text-blue-600 hover:text-blue-900" title="View Specifications">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                                </svg>
-                                            </a>
-                                            <button wire:click="downloadPdf({{ $invoice->id }})" class="text-gray-600 hover:text-gray-900" title="Download PDF">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                                </svg>
-                                            </button>
-                                            <button wire:click="delete({{ $invoice->id }})" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure you want to delete this invoice?')" title="Delete Invoice">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                            </button>
+                                        <div class="flex flex-col" style="margin-left: -100px;">
+                                            <div class="flex space-x-2">
+                                                <span style="margin-right: 40px;" class="text-sm text-gray-500">Invoice</span>
+                                                <div class="flex-1"></div>
+                                                <button onclick="window.open('{{ route('invoices.preview', $invoice->id) }}', '_blank')" class="text-green-600 hover:text-blue-900 ml-2" title="Preview PDF">
+                                                    <x-heroicon-s-document class="w-5 h-5" />
+                                                </button>
+                                                <button wire:click="edit({{ $invoice->id }})" class="text-indigo-600 hover:text-indigo-900 ml-2" title="Edit Invoice">
+                                                    <x-heroicon-s-pencil class="w-5 h-5" />
+                                                </button>
+                                                <button wire:click="delete({{ $invoice->id }})" class="text-red-600 hover:text-red-900 ml-2" onclick="return confirm('Are you sure you want to delete this invoice?')" title="Delete Invoice">
+                                                    <x-heroicon-s-trash class="w-5 h-5" />
+                                                </button>
+                                            </div>
+                                            <div class="border-t border-gray-200 mt-1"></div>
+                                            <div class="flex space-x-2 mt-1">
+                                                <span style="margin-right: 40px;" class="text-sm text-gray-500">Specification</span>
+                                                <div class="flex-1"></div>
+                                                <button onclick="window.open('{{ route('invoices.specifications.preview', $invoice->id) }}', '_blank')" class="text-green-600 hover:text-blue-900 ml-2" title="View Specification">
+                                                    <x-heroicon-s-document class="w-5 h-5" />
+                                                </button>
+                                                <button onclick="window.location.href='{{ route('invoices.specifications', $invoice->id) }}'" class="text-indigo-600 hover:text-indigo-900 ml-2" title="Edit Specification">
+                                                    <x-heroicon-s-pencil class="w-5 h-5" />
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
